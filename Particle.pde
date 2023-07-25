@@ -1,15 +1,12 @@
 class Particle extends Body{
   ParticleType particleType;
-  Particle(PVector _position, ParticleType _particleType, int _ID) {
+  Particle(PVector _position, ParticleType _particleType ) {
     position = _position;
     particleType = _particleType;
-    ID = _ID;
   }
   void update() {
     position.add(velocity);
-    if(particleType.dragFactor != 0) {
-      velocity.add(new PVector(0, 0).sub(velocity).normalize().mult(particleType.dragFactor));
-    }
+    this.addForce(new PVector(0, 0).lerp(velocity, -particleType.dragFactor));
   }
   void render() {
     fill(particleType.fill);

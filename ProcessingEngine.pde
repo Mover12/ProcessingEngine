@@ -1,6 +1,6 @@
-Body[] bodies = new Body[100];
+Body[] bodies = new Body[10000];
 
-ParticleType white = new ParticleType(#FFFFFF, 100, 0, 0.1, new Collider());
+ParticleType white = new ParticleType(#FFFFFF, 1, 0.1);
 
 void setup() {
   size(800, 800);
@@ -9,10 +9,8 @@ void setup() {
   surface.setResizable(true);
 
   for (int i = 0; i < bodies.length; i++) {
-    bodies[i] = new Particle(new PVector(400, 400), white, i);
+    bodies[i] = new Particle(new PVector(400, 400), white);
   }
-  
-  thread("Update");
 }
 
 void draw() {
@@ -21,12 +19,18 @@ void draw() {
   for (Body body : bodies) {
     body.update();
     body.render();
-    CollisionDetection();
+  }
+  
+  for (int i = 0; i < bodies.length; i++) {
+    bodies[i].addForceAtPosition(bodies[0].position);
   }
 }
 
-void Update() {
-  for(;;) {
+void mouseClicked() {
+  bodies[0].setPosition(new PVector(mouseX, mouseY));
+  for (int i = 1; i < bodies.length; i++) {
+    bodies[i].setForce(new PVector(random(10), random(10)));
+    bodies[i].setPosition(new PVector(random(800), random(800)));
   }
 }
 
@@ -34,19 +38,9 @@ void CollisionDetection() {
   for (Body body : bodies) {
     for (Body curBody : bodies) {
       if(body != curBody) {
-      if(body.position.copy().dist(curBody.position) <= ( ((Particle) body).particleType.size + ((Particle) curBody).particleType.size ) / 2) {
-        body.addForce(curBody.position.copy().sub(body.position).normalize().mult(0.001));
-        curBody.addForce(body.position.copy().sub(curBody.position).normalize().mult(0.001));
-      } else {
+        if(body.position.copy().dist(curBody.position) <= ( ((Particle) body).particleType.size + ((Particle) curBody).particleType.size ) / 2) {
+        } else {}
       }
     }
-    }
-  }
-}
-
-void mouseClicked() {
-  for (int i = 1; i < bodies.length; i++) {
-    bodies[i].setForce(new PVector(0, 0));
-    bodies[i].setPosition(new PVector(random(800), random(800)));
   }
 }
