@@ -1,4 +1,5 @@
 class Body {
+  int ID;
   PVector position = new PVector(0, 0);
   PVector velocity = new PVector(0, 0);
   void setForce(PVector _velocity) {
