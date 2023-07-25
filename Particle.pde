@@ -7,6 +7,9 @@ class Particle extends Body{
   }
   void update() {
     position.add(velocity);
+    if(particleType.dragFactor != 0) {
+      velocity.add(new PVector(0, 0).sub(velocity).normalize().mult(particleType.dragFactor));
+    }
   }
   void render() {
     fill(particleType.fill);
