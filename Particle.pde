@@ -1,15 +1,15 @@
-class Particle extends Body{
+class Particle extends Component {
   ParticleType particleType;
-  Particle(PVector _position, ParticleType _particleType ) {
-    position = _position;
-    particleType = _particleType;
+  Particle(PVector position, ParticleType particleType ) {
+    Behavior.object.getComponent(Transform.class).position = position;
+    this.particleType = particleType;
   }
   void update() {
-    position.add(velocity);
-    this.addForce(new PVector(0, 0).lerp(velocity, -particleType.dragFactor));
+    Behavior.object.getComponent(Transform.class).position.add(Behavior.object.getComponent(RigidBody.class).velocity);
+    Behavior.object.getComponent(RigidBody.class).addForce(new PVector(0, 0).lerp(Behavior.object.getComponent(RigidBody.class).velocity, -particleType.dragFactor));
   }
-  void render() {
+  void display() {
     fill(particleType.fill);
-    circle(position.x, position.y, particleType.size);
+    circle(Behavior.object.getComponent(Transform.class).position.x, Behavior.object.getComponent(Transform.class).position.y, particleType.size);
   }
 }
