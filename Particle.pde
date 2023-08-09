@@ -1,15 +1,18 @@
 class Particle extends Component {
-  ParticleType particleType;
-  Particle(PVector position, ParticleType particleType ) {
-    Behavior.object.getComponent(Transform.class).position = position;
-    this.particleType = particleType;
+  Particle (GameObject objectPointer) {
+    super(objectPointer);
   }
+  
+  ParticleType particleType = new ParticleType(#FFFFFF, 100, 0.1);
+  
   void update() {
-    Behavior.object.getComponent(Transform.class).position.add(Behavior.object.getComponent(RigidBody.class).velocity);
-    Behavior.object.getComponent(RigidBody.class).addForce(new PVector(0, 0).lerp(Behavior.object.getComponent(RigidBody.class).velocity, -particleType.dragFactor));
+    objectPointer.getComponent(Transform.class).position.add(objectPointer.getComponent(RigidBody.class).velocity);
+    objectPointer.getComponent(RigidBody.class).addForce(new PVector(0, 0).lerp(objectPointer.getComponent(RigidBody.class).velocity, -particleType.dragFactor));
   }
+  
   void display() {
     fill(particleType.fill);
-    circle(Behavior.object.getComponent(Transform.class).position.x, Behavior.object.getComponent(Transform.class).position.y, particleType.size);
+    circle(objectPointer.getComponent(Transform.class).position.x, objectPointer.getComponent(Transform.class).position.y, particleType.size);
   }
+  
 }
